@@ -8,9 +8,13 @@ This project is currently being managed by students in IT Security from France
 
 Choosen file formats :
 * .bmp : 
-  * IrFanView Gets the data via the pointer
-  * UniversalViewer Gets the data right after the header
+  * IrFanView link #TODO Gets the data via the pointer
+  * UniversalViewer link #TODO Gets the data right after the header
 * .zip :
   * Bottom-up parsing : 7-zip, Java Zipfile, Python zipfile, Unzip 6.00, Windiws 7 Explorer, WinRAR
   * Top-bottom parsing : PHP ZipArchive, PHP zip_open
-  * Scanning for all Local File Headers : binwalk
+  * Scanning for all Local File Headers : binwalk link #TODO
+
+## Requirements :
+
+ * Construct 2.8.11 : link #TODO
