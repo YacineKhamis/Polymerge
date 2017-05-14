@@ -2,6 +2,7 @@ import sys
 import os
 import binascii
 import zipfile
+import argparse
 
 
 def createZipFile(fileToArchive):
@@ -14,7 +15,7 @@ def stats(fileToAnalyze):
         return os.stat(fileToAnalyze)
 
 
-def appendTo(fileCombined, fileToAppend):
+def appendTo(fileCombined, fileToAppend, pathToOutputFile):
     f1 = open(fileCombined, 'rb')
     fileData = f1.read()
     f1.close()
@@ -23,8 +24,7 @@ def appendTo(fileCombined, fileToAppend):
     toAppendData = f2.read()
     f2.close()
 
-    pathToOuputFile = 'Polymerged_' + fileCombined.split('/')[-1]
-    output = open(pathToOuputFile, 'wb')
+    output = open(pathToOutputFile, 'wb')
     output.write(fileData)
     output.write(toAppendData)
     output.close()
@@ -56,8 +56,23 @@ def printHexa(fileToRead):
     print('__________________________________________________________________')
 
 
+def MergingProcess(frontFile, toHideFile, outputFilename):
+    createZipFile(toHideFile)
+    appendTo(frontFile, toHideFile, outputFilename)
+    os.remove(toHideFile + '.zip')
+
 if __name__ == '__main__':
-    createZipFile(sys.argv[2])
-    appendTo(sys.argv[1], sys.argv[2] + '.zip')
-    os.remove(sys.argv[2] + '.zip')
-    print('DONE')
+    parser = argparse.ArgumentParser(description='Polymerge script. Output a file that preserve its properties and \
+    embed another file as an Zip Archive.')
+    parser.add_argument('facadeFile')
+    parser.add_argument('hiddenFile')
+    parser.add_argument('-o', '--output')
+    parser.add_argument('-p', '--printFile', action="store_true")
+    args = parser.parse_args()
+    if args.printFile:
+        printHexa(args.facadeFile)
+        #printHexa(args.hiddenFile)
+    if args.output:
+        MergingProcess(args.facadeFile, args.hiddenFile, args.output.split('/')[-1])
+    else:
+        MergingProcess(args.facadeFile, args.hiddenFile, 'Polymerged_' + args.facadeFile.split('/')[-1])
